@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: mtg_tracker_db
+    restart: always
+    environment:
+      POSTGRES_DB: mtg_db
+      POSTGRES_USER: mtg_user
+      POSTGRES_PASSWORD: mtg_password
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
