@@ -1,8 +1,6 @@
 package com.mtgwatcher.backend.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,9 +16,7 @@ public class Carta {
     private String nome;
     private String setCode;
     private String raridade;
-    private BigDecimal precoUsd;
-    private BigDecimal precoEur;
-    private BigDecimal precoTix;
 
-    private LocalDateTime dataColeta;
+    @OneToMany(mappedBy = "carta", cascade = CascadeType.ALL)
+    private List<HistoricoPreco> historicoPrecos;
 }

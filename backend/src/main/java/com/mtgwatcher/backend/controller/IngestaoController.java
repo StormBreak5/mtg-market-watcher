@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mtgwatcher.backend.entity.Carta;
+import com.mtgwatcher.backend.dto.IngestaoDTO;
 import com.mtgwatcher.backend.service.CartaService;
 
 @RestController
@@ -18,11 +18,12 @@ public class IngestaoController {
     private CartaService cartaService;
 
     @PostMapping
-    public ResponseEntity<String> receberDados(@RequestBody Carta carta) {
+    public ResponseEntity<String> receberDados(@RequestBody IngestaoDTO dto) {
         try {
-            Carta cartaSalva = cartaService.salvarOuAtualizar(carta);
-            return ResponseEntity.ok("Carta salva com sucesso: " + cartaSalva.getNome());
+            cartaService.processarIngestao(dto);
+            return ResponseEntity.ok("Dados processados com sucesso.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body("Erro ao processar: " + e.getMessage());
         }
     }
