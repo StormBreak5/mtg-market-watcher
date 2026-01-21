@@ -4,21 +4,27 @@ Plataforma para monitoramento e análise de preços de cartas de *Magic: The Gat
 
 ## 🏗 Arquitetura
 
-| Diretório    | Responsabilidade      | Tecnologias          |
-| :---         | :---                  | :---                 |
-| `/miner`     | Coleta de Dados       | Python, Scryfall API |
+| Diretório    | Responsabilidade      | Tecnologias                      |
+| :---         | :---                  | :---                             |
+| `/miner`     | Coleta de Dados       | Python, Scryfall API             |
 | `/backend`   | API & Persistência    | Java 21, Spring Boot, PostgreSQL |
-| `/frontend`  | Dashboard             | Angular (planejado)  |
-| `/docker`    | Infraestrutura        | Docker Compose       |
+| `/frontend`  | Dashboard             | Angular 19, Angular Material     |
+| `/docker`    | Infraestrutura        | Docker Compose                   |
 
 ## ✅ Implementado
 
 ### Backend (Spring Boot)
-- ✅ Entidade `Carta` com campos: nome, edição, preço, raridade, tipo, etc.
-- ✅ Repository JPA para persistência
-- ✅ Service layer com lógica de negócio
-- ✅ Endpoint REST `/api/ingestao/cartas` (POST) para receber dados do minerador
-- ✅ Configuração PostgreSQL via Docker
+- ✅ Entidade `Carta` e Repository JPA.
+- ✅ Service layer com lógica de negócio.
+- ✅ Ingestão de dados via `/api/ingestao/cartas` (POST).
+- ✅ Consulta de dados via `/api/cartas` (GET).
+- ✅ Configuração PostgreSQL via Docker.
+
+### Frontend (Angular)
+- ✅ Estrutura inicial do projeto Angular.
+- ✅ Integração com API Backend (Service de Cartas).
+- ✅ Componentes de UI: Lista de Cartas, Histórico de Preços (Dialog), Mensagens de Erro.
+- ✅ Angular Material para UI/UX.
 
 ### Banco de Dados
 - ✅ PostgreSQL 15 rodando via Docker Compose
@@ -37,10 +43,17 @@ docker-compose up -d
 cd backend
 ./mvnw spring-boot:run
 ```
+O backend estará disponível em `http://localhost:8080`.
 
-O backend estará disponível em `http://localhost:8080`
+### 3. Rodar o Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+O frontend estará disponível em `http://localhost:4200`.
 
-### 3. Minerador (Python)
+### 4. Minerador (Python)
 ```bash
 cd miner
 python -m venv venv
@@ -51,17 +64,19 @@ python scryfall_miner.py
 
 ## 📡 Endpoints Disponíveis
 
-| Método | Endpoint                | Descrição                    |
-|--------|-------------------------|------------------------------|
+| Método | Endpoint                | Descrição                           |
+|--------|-------------------------|-------------------------------------|
 | POST   | `/api/ingestao/cartas`  | Recebe dados de cartas do minerador |
+| GET    | `/api/cartas`           | Retorna a lista de cartas           |
+| GET    | `/api/cartas/{id}`      | Retorna detalhes de uma carta       |
 
 ## 🔧 Próximos Passos
 
-- [ ] Endpoints de consulta (GET)
-- [ ] Frontend Angular
-- [ ] Integração completa miner → backend
-- [ ] Dashboard de visualização de preços
+- [ ] Melhorar visualização com gráficos de preço.
+- [ ] Implementar filtros de busca e ordenação.
+- [ ] Sistema de alertas de preço.
+- [ ] Autenticação e Favoritos.
 
 ---
 
-**Status:** 🚧 MVP em desenvolvimento
+**Status:** 🚧 MVP em desenvolvimento (Frontend Integrado)
