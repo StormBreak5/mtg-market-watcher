@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>
+    {{ carta.nome }}
+    <mat-chip-set class="dialog-chips">
+        <mat-chip [color]="getRaridadeColor(carta.raridade)" highlighted>
+            {{ carta.raridade }}
+        </mat-chip>
+        <mat-chip>{{ carta.setCode }}</mat-chip>
+    </mat-chip-set>
+</h2>
+
+<mat-dialog-content>
+    @if (carta.historicoPrecos && carta.historicoPrecos.length > 0) {
+    <mat-list>
+        @for (historico of carta.historicoPrecos; track historico.id) {
+        <mat-list-item>
+            <mat-icon matListItemIcon>schedule</mat-icon>
+            <div matListItemTitle class="history-date">
+                {{ formatarData(historico.dataRegistro) }}
+            </div>
+            <div matListItemLine class="history-prices">
+                <span class="price-tag usd">USD: <strong>${{ formatarPreco(historico.valorUsd) }}</strong></span>
+                <span class="price-tag brl">BRL: <strong>R${{ formatarPreco(historico.valorBrl) }}</strong></span>
+                <span class="price-tag eur">EUR: <strong>€{{ formatarPreco(historico.valorEur) }}</strong></span>
+                <span class="price-tag tix">TIX: <strong>{{ formatarPreco(historico.valorTix) }}</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+        }
+    </mat-list>
+    } @else {
+    <div class="no-history">
+        <p>Nenhum histórico de preços disponível.</p>
+    </div>
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onClose()">Fechar</button>
+</mat-dialog-actions>

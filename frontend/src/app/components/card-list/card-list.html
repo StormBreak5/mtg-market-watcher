@@ -1,0 +1,14 @@
+@if (cartas.length > 0) {
+<div class="cards-grid">
+    @for (carta of cartas; track carta.id) {
+    <app-card-item [carta]="carta" (cardClick)="onCardClick($event)">
+    </app-card-item>
+    }
+</div>
+} @else {
+<div class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h2>Nenhuma carta encontrada</h2>
+    <p>Ainda não há cartas cadastradas no sistema.</p>
+</div>
+}

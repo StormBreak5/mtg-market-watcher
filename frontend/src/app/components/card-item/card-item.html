@@ -1,0 +1,50 @@
+<mat-card class="card-item" (click)="onCardClick()">
+    <mat-card-header>
+        <mat-card-title>{{ carta.nome }}</mat-card-title>
+        <mat-card-subtitle>
+            <mat-chip-set>
+                <mat-chip [color]="getRaridadeColor(carta.raridade)" highlighted>
+                    {{ carta.raridade }}
+                </mat-chip>
+                <mat-chip>{{ carta.setCode }}</mat-chip>
+            </mat-chip-set>
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        @if (carta.historicoPrecos && carta.historicoPrecos.length > 0) {
+        <div class="price-grid">
+            <div class="price-item">
+                <span class="currency">USD</span>
+                <span class="price">${{ formatarPreco(carta.historicoPrecos[0].valorUsd) }}</span>
+            </div>
+            <div class="price-item">
+                <span class="currency">BRL</span>
+                <span class="price">R$ {{ formatarPreco(carta.historicoPrecos[0].valorBrl) }}</span>
+            </div>
+            <div class="price-item">
+                <span class="currency">EUR</span>
+                <span class="price">€{{ formatarPreco(carta.historicoPrecos[0].valorEur) }}</span>
+            </div>
+            <div class="price-item">
+                <span class="currency">TIX</span>
+                <span class="price">{{ formatarPreco(carta.historicoPrecos[0].valorTix) }}</span>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="last-update">
+            <mat-icon>schedule</mat-icon>
+            {{ formatarData(carta.historicoPrecos[0].dataRegistro) }}
+        </div>
+        }
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+        <button mat-button color="primary">
+            <mat-icon>timeline</mat-icon>
+            Ver Histórico
+        </button>
+    </mat-card-actions>
+</mat-card>
