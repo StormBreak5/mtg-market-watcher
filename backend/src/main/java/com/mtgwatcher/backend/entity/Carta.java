@@ -18,5 +18,6 @@ public class Carta {
     private String raridade;
 
     @OneToMany(mappedBy = "carta", cascade = CascadeType.ALL)
+    @OrderBy("dataRegistro DESC")
     private List<HistoricoPreco> historicoPrecos;
 }

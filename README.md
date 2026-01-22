@@ -1,82 +1,91 @@
 # MTG Market Watcher 🧙‍♂️
 
-Plataforma para monitoramento e análise de preços de cartas de *Magic: The Gathering*.
+Sistema completo para monitoramento de preços de cartas de Magic: The Gathering com coleta automática de dados e interface web.
 
 ## 🏗 Arquitetura
 
-| Diretório    | Responsabilidade      | Tecnologias                      |
-| :---         | :---                  | :---                             |
-| `/miner`     | Coleta de Dados       | Python, Scryfall API             |
-| `/backend`   | API & Persistência    | Java 21, Spring Boot, PostgreSQL |
-| `/frontend`  | Dashboard             | Angular 19, Angular Material     |
-| `/docker`    | Infraestrutura        | Docker Compose                   |
+| Componente   | Tecnologia                        | Porta |
+|--------------|-----------------------------------|-------|
+| Frontend     | Angular 19 + Material Design     | 4200  |
+| Backend      | Spring Boot + PostgreSQL         | 8080  |
+| Database     | PostgreSQL 15                     | 5433  |
+| Miner        | Python + Scryfall + LigaMagic    | -     |
 
-## ✅ Implementado
+## ✅ Funcionalidades
 
-### Backend (Spring Boot)
-- ✅ Entidade `Carta` e Repository JPA.
-- ✅ Service layer com lógica de negócio.
-- ✅ Ingestão de dados via `/api/ingestao/cartas` (POST).
-- ✅ Consulta de dados via `/api/cartas` (GET).
-- ✅ Configuração PostgreSQL via Docker.
+- **Coleta Automática**: Preços em USD, EUR, TIX (Scryfall) e BRL (LigaMagic)
+- **Interface Web**: Dashboard responsivo com Angular Material
+- **Histórico Completo**: Armazenamento e visualização do histórico de preços
+- **API REST**: Endpoints para integração e consulta de dados
+- **Execução Agendada**: Coleta automática a cada 30 minutos
 
-### Frontend (Angular)
-- ✅ Estrutura inicial do projeto Angular.
-- ✅ Integração com API Backend (Service de Cartas).
-- ✅ Componentes de UI: Lista de Cartas, Histórico de Preços (Dialog), Mensagens de Erro.
-- ✅ Angular Material para UI/UX.
+## 🚀 Execução
 
-### Banco de Dados
-- ✅ PostgreSQL 15 rodando via Docker Compose
-- ✅ Schema criado automaticamente pelo Hibernate
-
-## 🚀 Como Rodar
-
-### 1. Subir o Banco de Dados
+### 1. Banco de Dados
 ```bash
 cd docker
 docker-compose up -d
 ```
 
-### 2. Rodar o Backend
+### 2. Backend
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
-O backend estará disponível em `http://localhost:8080`.
 
-### 3. Rodar o Frontend
+### 3. Frontend
 ```bash
 cd frontend
 npm install
 npm start
 ```
-O frontend estará disponível em `http://localhost:4200`.
 
-### 4. Minerador (Python)
+### 4. Minerador (Primeira execução)
 ```bash
 cd miner
-python -m venv venv
-venv\Scripts\activate  # Windows
 pip install -r requirements.txt
-python scryfall_miner.py
+python run_miner.py
 ```
 
-## 📡 Endpoints Disponíveis
+### Scripts Windows
+- **Execução única**: `start_miner.bat`
+- **Execução agendada**: `start_miner_scheduled.bat`
 
-| Método | Endpoint                | Descrição                           |
-|--------|-------------------------|-------------------------------------|
-| POST   | `/api/ingestao/cartas`  | Recebe dados de cartas do minerador |
-| GET    | `/api/cartas`           | Retorna a lista de cartas           |
-| GET    | `/api/cartas/{id}`      | Retorna detalhes de uma carta       |
+## 📊 Cartas Monitoradas
 
-## 🔧 Próximos Passos
+- Lightning Bolt
+- Sol Ring  
+- Black Lotus
+- Ragavan, Nimble Pilferer
+- Sheoldred, the Apocalypse
+- Teferi, Time Raveler
+- Oko, Thief of Crowns
+- Jace, the Mind Sculptor
+- Tarmogoyf
+- Snapcaster Mage
 
-- [ ] Melhorar visualização com gráficos de preço.
-- [ ] Implementar filtros de busca e ordenação.
-- [ ] Sistema de alertas de preço.
-- [ ] Autenticação e Favoritos.
+## 🔧 API Endpoints
+
+| Método | Endpoint               | Descrição                    |
+|--------|------------------------|------------------------------|
+| GET    | `/api/cartas`          | Lista todas as cartas        |
+| GET    | `/api/cartas/{id}`     | Detalhes de uma carta        |
+| POST   | `/api/ingestao/cartas` | Ingestão de dados (interno)  |
+
+## ⚠️ Troubleshooting
+
+**Frontend não mostra dados:**
+1. Verifique se o backend está rodando: `http://localhost:8080/api/cartas`
+2. Execute o minerador: `python run_miner.py`
+3. Confirme se o banco está ativo: `docker ps`
+
+**Erro de conexão com banco:**
+```bash
+cd docker
+docker-compose down
+docker-compose up -d
+```
 
 ---
 
-**Status:** 🚧 MVP em desenvolvimento (Frontend Integrado)
+**Status:** ✅ MVP Funcional

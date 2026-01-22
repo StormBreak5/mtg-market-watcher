@@ -32,11 +32,17 @@ public class CartaService {
         historico.setDataRegistro(LocalDateTime.now());
         historico.setValorUsd(dto.getPrecoUsd());
         historico.setValorBrl(dto.getPrecoBrl());
+        historico.setValorEur(dto.getPrecoEur());
+        historico.setValorTix(dto.getPrecoTix());
 
         // 3. Salva o histórico
         historicoPrecoRepository.save(historico);
 
-        System.out.println("💰 Preço atualizado para: " + carta.getNome());
+        System.out.println("💰 Preço atualizado para: " + carta.getNome() + 
+                          " | USD: " + dto.getPrecoUsd() + 
+                          " | BRL: " + dto.getPrecoBrl() + 
+                          " | EUR: " + dto.getPrecoEur() + 
+                          " | TIX: " + dto.getPrecoTix());
     }
 
     private Carta criarNovaCarta(IngestaoDTO dto) {

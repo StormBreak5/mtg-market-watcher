@@ -6,7 +6,7 @@ services:
     container_name: mtg_tracker_db
     restart: always
     environment:
-      POSTGRES_DB: mtg_db
+      POSTGRES_DB: mtg_tracker_db
       POSTGRES_USER: mtg_user
       POSTGRES_PASSWORD: mtg_password
     ports:

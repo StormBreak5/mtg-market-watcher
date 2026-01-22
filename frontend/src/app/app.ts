@@ -1,4 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CartaService } from './services/carta.service';
 import { Carta } from './models/carta.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +11,7 @@ import { PriceHistoryDialog } from './components/price-history-dialog/price-hist
   standalone: false,
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   protected readonly title = signal('MTG Market Watcher');
 
   cartas = signal<Carta[]>([]);
@@ -19,11 +20,23 @@ export class App implements OnInit {
 
   constructor(
     private cartaService: CartaService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
-    this.carregarCartas();
+    // No SSR, não carrega dados inicialmente
+    if (!isPlatformBrowser(this.platformId)) {
+      this.loading.set(false);
+      return;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Carrega dados apenas no cliente (após hidratação)
+    if (isPlatformBrowser(this.platformId)) {
+      this.carregarCartas();
+    }
   }
 
   carregarCartas(): void {
